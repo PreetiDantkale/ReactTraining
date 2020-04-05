@@ -1,4 +1,4 @@
-import React, { useReducer } from 'react'
+import React, { useState, useReducer } from 'react'
 import TextField from './TextField';
 import ButtonComponent from './Button'
 import LinkComponent from './LinkComponent'
@@ -7,7 +7,7 @@ import { Button , Container, Row, Col} from 'reactstrap';
 import * as yup from 'yup';
 
 const ContainerComponent = (props) => {
-
+  const [token, setToken] = useState(null);
   const handleSubmit = e => {
       e.preventDefault();
 
@@ -27,8 +27,13 @@ const ContainerComponent = (props) => {
           return response.json();
         })
         .then(jsonResponse =>{
-          if(jsonResponse.token)
+          if(jsonResponse.token){
+          // token = jsonResponse.token;
+          // const {token} = jsonResponse.token;
             console.log("Token No",jsonResponse.token);
+            // console.log(token)
+            setToken(jsonResponse.token);
+          }
           else {
             console.log("error found")
           }
@@ -40,6 +45,18 @@ const ContainerComponent = (props) => {
         console.error(e)
       }
     }
+const logOut = () =>{
+  
+}
+if(token){
+  return(
+  <form onSubmit={logOut}>
+    <center>
+      <h2>Logged In Successfully</h2>
+      <Button type="submit" color = 'primary '>Logout</Button>
+    </center>
+  </form>
+)}
   return (
    <center>
       <form onSubmit={handleSubmit}>
@@ -60,7 +77,7 @@ const ContainerComponent = (props) => {
          <Row>
            <Col>
              <br/>
-             <Button type="submit" color = 'primary '>Submit</Button>
+              <Button type="submit" color = 'primary '>Submit</Button>
              </Col>
            </Row>
              <LinkComponent value='Dont have account ?? Signup' href='#'/>
@@ -69,4 +86,5 @@ const ContainerComponent = (props) => {
    </center>
  );
 }
+
 export default ContainerComponent;
