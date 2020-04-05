@@ -6,51 +6,40 @@ import Label from './Label'
 import { Button , Container, Row, Col} from 'reactstrap';
 import * as yup from 'yup';
 
-
-const initialState = {
-  email: null,
-  password: null
-}
-
-const setLoginData = param => {
-    return {
-    type: "SET VALUES",
-    payload: param
-    };
-};
-const reducer = (state, action) => {
-    switch (action.type) {
-      case "SET VALUES":
-        return { ...state, ...action.payload };
-      default:
-        return state;
-    }
-}
-
 const ContainerComponent = (props) => {
-  const [state, dispatch] = useReducer(reducer, initialState);
-
-  const handleTextChange = e => {
-      const { value, name } = e.target;
-      let formData = { ...state };
-      formData[name] = value;
-      dispatch(setLoginData(formData));
-
-  };
 
   const handleSubmit = e => {
       e.preventDefault();
-      validatefields.isValid(state).then(isValid => {
-          alert("Valid Input: " + isValid +
-          "\nEntered Email: " + state.email +
-           "\nEntered Password: " + state.password );
-      });
-      alert(state.email)
-  };
-  let validatefields = yup.object().shape({
-      email: yup.string().email('Invalid Email ID').required("required field"),
-      password: yup.string().required('required field'),
-  });
+
+      let formData = new FormData(e.target);
+      try {
+        fetch("https://reqres.in/api/login", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            email: formData.get("email"),
+            password: formData.get("password")
+          })
+        })
+        .then(response => {
+          return response.json();
+        })
+        .then(jsonResponse =>{
+          if(jsonResponse.token)
+            console.log("Token No",jsonResponse.token);
+          else {
+            console.log("error found")
+          }
+        })
+      }
+      catch(e){
+        alert("Invalid email &/ password");
+        console.log("error data",e)
+        console.error(e)
+      }
+    }
   return (
    <center>
       <form onSubmit={handleSubmit}>
@@ -59,13 +48,13 @@ const ContainerComponent = (props) => {
          Login
          <Row>
            <Col>
-             <TextField type ='text' placeholder="Username" name = 'email' onChange={handleTextChange} value= {state.email} required/>
+             <TextField type ='text' placeholder="Username" name = 'email' required/>
            </Col>
          </Row>
            <br/>
          <Row>
            <Col>
-             <TextField type= 'password' placeholder = 'Password' name = 'password' onChange={handleTextChange} value= {state.password} />
+             <TextField type= 'password' placeholder = 'Password' name = 'password'  />
            </Col>
          </Row>
          <Row>
