@@ -3,12 +3,14 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
-import ContainerComponent from './components/Container'
+import RegisterContainer from './components/RegisterContainer'
+// import LoginContainer from './components/LoginContainer'
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 ReactDOM.render(
   <React.StrictMode>
-    <ContainerComponent/>
+    <RegisterContainer/>
+    
   </React.StrictMode>,
   document.getElementById('root')
 );

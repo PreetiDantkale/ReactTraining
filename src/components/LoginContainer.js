@@ -6,7 +6,7 @@ import Label from './Label'
 import { Button , Container, Row, Col} from 'reactstrap';
 import * as yup from 'yup';
 
-const ContainerComponent = (props) => {
+const LoginContainer = (props) => {
   const [token, setToken] = useState(null);
   const handleSubmit = e => {
       e.preventDefault();
@@ -46,7 +46,7 @@ const ContainerComponent = (props) => {
       }
     }
 const logOut = () =>{
-  
+
 }
 if(token){
   return(
@@ -87,4 +87,4 @@ if(token){
  );
 }
 
-export default ContainerComponent;
+export default LoginContainer;
